@@ -1703,13 +1703,20 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # URL generation helpers
     def _get_list_filter_args(self):
+        """
+        Sample::
+
+            ...?flt0_0=000&flt1_14=1&flt3_21=admin
+
+        """
         if self._filters:
             filters = []
 
             for n in request.args:
+                # 跳过非 flt 开头的参数
                 if not n.startswith('flt'):
                     continue
-
+                # 跳过没有下划线的参数
                 if '_' not in n:
                     continue
 

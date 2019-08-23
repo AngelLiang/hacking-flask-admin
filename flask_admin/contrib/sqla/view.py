@@ -934,7 +934,7 @@ class ModelView(BaseModelView):
                     column = field if count_alias is None else getattr(count_alias, field.key)
                     count_filter_stmt.append(cast(column, Unicode).ilike(stmt))
 
-            query = query.filter(or_(*filter_stmt))
+            query = query.filter(or_(*filter_stmt))  # “或”查询
 
             if count_query is not None:
                 count_query = count_query.filter(or_(*count_filter_stmt))

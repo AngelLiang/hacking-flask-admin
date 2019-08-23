@@ -14,10 +14,13 @@ from flask_admin.tools import iterencode, iterdecode, escape  # noqa: F401
 
 def parse_like_term(term):
     if term.startswith('^'):
+        # 匹配开头字符
         stmt = '%s%%' % term[1:]
     elif term.startswith('='):
+        # 全匹配
         stmt = term[1:]
     else:
+        # 模糊匹配
         stmt = '%%%s%%' % term
 
     return stmt
