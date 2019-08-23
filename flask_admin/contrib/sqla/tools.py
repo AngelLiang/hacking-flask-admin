@@ -13,6 +13,22 @@ from flask_admin.tools import iterencode, iterdecode, escape  # noqa: F401
 
 
 def parse_like_term(term):
+    """
+
+    If you enter ZZZ in the UI search field, it will generate ILIKE '%ZZZ%' statement against searchable columns.
+
+    If you enter multiple words, each word will be searched separately, 
+    but only rows that contain all words will be displayed. 
+    For example, searching for abc def will find all rows that contain abc and def in one or more columns.
+
+    If you prefix your search term with ^, it will find all rows that start with ^. So, 
+    if you entered ^ZZZ then ILIKE 'ZZZ%' will be used.
+
+    If you prefix your search term with =, it will perform an exact match. For example, 
+    if you entered =ZZZ, the statement ILIKE 'ZZZ' will be used.
+
+    """
+
     if term.startswith('^'):
         # 匹配开头字符
         stmt = '%s%%' % term[1:]

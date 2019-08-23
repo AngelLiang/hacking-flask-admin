@@ -1057,6 +1057,7 @@ class ModelView(BaseModelView):
 
         # Auto join
         for j in self._auto_joins:
+            # joinedload: https://docs.sqlalchemy.org/en/13/orm/loading_relationships.html#sqlalchemy.orm.joinedload
             query = query.options(joinedload(j))
 
         # Sorting
