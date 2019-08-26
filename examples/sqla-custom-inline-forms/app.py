@@ -67,6 +67,7 @@ class CustomInlineModelFormList(InlineModelFormList):
     widget = CustomInlineFieldListWidget()
 
     def display_row_controls(self, field):
+        """返回 False 为了去掉 InlineModelForm 右上角的“删除”选项"""
         return False
 
 
