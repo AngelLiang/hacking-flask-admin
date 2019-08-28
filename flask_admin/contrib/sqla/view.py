@@ -735,12 +735,12 @@ class ModelView(BaseModelView):
         converter = self.model_form_converter(self.session, self)
         form_class = form.get_form(self.model, converter,
                                    base_class=self.form_base_class,
-                                   only=self.form_columns,
-                                   exclude=self.form_excluded_columns,
-                                   field_args=self.form_args,
+                                   only=self.form_columns,  # 只需要显示的字段
+                                   exclude=self.form_excluded_columns,  # 不需要显示的字段
+                                   field_args=self.form_args,  # 表单参数
                                    ignore_hidden=self.ignore_hidden,
                                    extra_fields=self.form_extra_fields)
-
+        # 内联models
         if self.inline_models:
             form_class = self.scaffold_inline_form_models(form_class)
 

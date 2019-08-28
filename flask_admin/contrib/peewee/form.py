@@ -67,6 +67,7 @@ class InlineModelFormList(InlineFieldList):
         pass
 
     def save_related(self, obj):
+        """保存关系"""
         model_id = getattr(obj, self._pk)
 
         attr = getattr(self.model, self.prop)
@@ -78,7 +79,7 @@ class InlineModelFormList(InlineFieldList):
         for field in self.entries:
             field_id = field.get_pk()
 
-            is_created = field_id not in pk_map
+            is_created = field_id not in pk_map  # 是否是新建？
             if not is_created:
                 model = pk_map[field_id]
 
@@ -86,7 +87,7 @@ class InlineModelFormList(InlineFieldList):
                     model.delete_instance(recursive=True)
                     continue
             else:
-                model = self.model()
+                model = self.model()  # 新建
 
             field.populate_obj(model, None)
 
@@ -97,6 +98,7 @@ class InlineModelFormList(InlineFieldList):
 
             model.save()
 
+            # 递归
             # Recurse, to save multi-level nested inlines
             for f in itervalues(field.form._fields):
                 if f.type == 'InlineModelFormList':

@@ -2117,28 +2117,36 @@ class BaseModelView(BaseView, ActionsMixin):
         return_url = get_redirect_target() or self.get_url('.index_view')
 
         if not self.can_edit:
+            # 禁止编辑，则跳转回主页
             return redirect(return_url)
 
         id = get_mdict_item_or_list(request.args, 'id')
         if id is None:
+            # 没有id字段，跳转回主页
             return redirect(return_url)
 
+        # 获取model
         model = self.get_one(id)
 
+        # model不存在
         if model is None:
             flash(gettext('Record does not exist.'), 'error')
             return redirect(return_url)
 
+        # 获取编辑表单
         form = self.edit_form(obj=model)
         if not hasattr(form, '_validated_ruleset') or not form._validated_ruleset:
             self._validate_form_instance(ruleset=self._form_edit_rules, form=form)
 
         if self.validate_form(form):
             if self.update_model(form, model):
+                # 更新model成功
                 flash(gettext('Record was successfully saved.'), 'success')
                 if '_add_another' in request.form:
+                    # 添加另一个，重定向到创建视图
                     return redirect(self.get_url('.create_view', url=return_url))
                 elif '_continue_editing' in request.form:
+                    # 继续编辑，重定向本URL
                     return redirect(request.url)
                 else:
                     # save button
@@ -2147,10 +2155,12 @@ class BaseModelView(BaseView, ActionsMixin):
         if request.method == 'GET' or form.errors:
             self.on_form_prefill(form, id)
 
+        # 表单参数
         form_opts = FormOpts(widget_args=self.form_widget_args,
                              form_rules=self._form_edit_rules)
 
         if self.edit_modal and request.args.get('modal'):
+            # modal视图
             template = self.edit_modal_template
         else:
             template = self.edit_template

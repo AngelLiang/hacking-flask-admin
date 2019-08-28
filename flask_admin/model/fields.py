@@ -125,6 +125,11 @@ class InlineModelFormField(FormField):
         return getattr(self.form, self._pk).data
 
     def populate_obj(self, obj, name):
+        """获取form的fields并进行处理
+
+        :param obj: 表单对象
+        :param name: 该表单的字段名
+        """
         for name, field in iteritems(self.form._fields):
             if name != self._pk:
                 field.populate_obj(obj, name)
