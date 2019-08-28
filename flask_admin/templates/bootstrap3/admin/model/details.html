@@ -4,25 +4,34 @@
 {% block body %}
   {% block navlinks %}
   <ul class="nav nav-tabs">
+
+    {# 列表 #}
     <li>
         <a href="{{ return_url }}">{{ _gettext('List') }}</a>
     </li>
+
+    {# 可创建 #}
     {%- if admin_view.can_create -%}
     <li>
         <a href="{{ get_url('.create_view', url=return_url) }}">{{ _gettext('Create') }}</a>
     </li>
     {%- endif -%}
+
+    {# 可编辑 #}
     {%- if admin_view.can_edit -%}
     <li>
         <a href="{{ get_url('.edit_view', id=request.args.get('id'), url=return_url) }}">{{ _gettext('Edit') }}</a>
     </li>
     {%- endif -%}
+
+    {# 详情 #}
     <li class="active">
         <a href="javascript:void(0)">{{ _gettext('Details') }}</a>
     </li>
   </ul>
-  {% endblock %}
+  {% endblock %}  {# navlinks #}
 
+  {# 详情搜索 #}
   {% block details_search %}
     <div class="input-group fa_filter_container col-lg-6">
       <span class="input-group-addon">{{ _gettext('Filter') }}</span>
@@ -30,8 +39,10 @@
     </div>
   {% endblock %}
 
+  {# 详情表 #}
   {% block details_table %}
     <table class="table table-hover table-bordered searchable">
+    {# 遍历所有details_columns #}
     {% for c, name in details_columns %}
       <tr>
         <td>
@@ -46,6 +57,7 @@
   {% endblock %}
 {% endblock %}
 
+{# tail #}
 {% block tail %}
   {{ super() }}
   <script src="{{ admin_static.url(filename='admin/js/details_filter.js', v='1.0.0') }}"></script>

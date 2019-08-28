@@ -149,6 +149,7 @@
     <h3>{{ text }}</h3>
 {% endmacro %}
 
+{# 渲染表单字段 #}
 {% macro render_form_fields(form, form_opts=None) %}
     {% if form.hidden_tag is defined %}
         {{ form.hidden_tag() }}
@@ -161,11 +162,13 @@
         {% endfor %}
     {% endif %}
 
+    {# 只渲染 form_rules 的子弹 #}
     {% if form_opts and form_opts.form_rules %}
         {% for r in form_opts.form_rules %}
             {{ r(form, form_opts=form_opts) }}
         {% endfor %}
     {% else %}
+        {# 渲染所有非hidden的字段 #}
         {% for f in form if f.widget.input_type != 'hidden' %}
           {% if form_opts %}
             {% set kwargs = form_opts.widget_args.get(f.short_name, {}) %}
@@ -183,6 +186,7 @@
     </form>
 {% endmacro %}
 
+{# 渲染表单按钮 #}
 {% macro render_form_buttons(cancel_url, extra=None, is_modal=False) %}
     <hr>
     <div class="form-group">
@@ -198,10 +202,17 @@
     </div>
 {% endmacro %}
 
+{# 渲染表单 #}
+{# form：表单 #}
+{# cancel_url：取消URL #}
+{# extra：额外字段 #}
+{# form_opts： #}
+{# action： #}
+{# is_modal：是否是modal #}
 {% macro render_form(form, cancel_url, extra=None, form_opts=None, action=None, is_modal=False) -%}
     {% call form_tag(action=action) %}
-        {{ render_form_fields(form, form_opts=form_opts) }}
-        {{ render_form_buttons(cancel_url, extra, is_modal) }}
+        {{ render_form_fields(form, form_opts=form_opts) }}  {# 渲染字段 #}
+        {{ render_form_buttons(cancel_url, extra, is_modal) }} {# 渲染按钮 #}
     {% endcall %}
 {% endmacro %}
 
@@ -247,10 +258,13 @@
 {% endmacro %}
 
 {% macro extra() %}
+  {# 生成按钮 #}
   {% if admin_view.can_create %}
+  {# 保存并新建另一个 #}
   <input name="_add_another" type="submit" class="btn btn-default" value="{{ _gettext('Save and Add Another') }}" />
   {% endif %}
   {% if admin_view.can_edit %}
+  {# 保存并继续编辑 #}
   <input name="_continue_editing" type="submit" class="btn btn-default" value="{{ _gettext('Save and Continue Editing') }}" />
   {% endif %}
 {% endmacro %}

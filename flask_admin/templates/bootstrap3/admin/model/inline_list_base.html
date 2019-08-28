@@ -9,6 +9,7 @@
                 <small>
                     {{ field.label.text }} #{{ loop.index }}
                     <div class="pull-right">
+                        {# 右上角删除checkbox #}
                         {% if subfield.get_pk and subfield.get_pk() %}
                         <input type="checkbox" name="del-{{ subfield.id }}" id="del-{{ subfield.id }}" />
                         <label for="del-{{ subfield.id }}" style="display: inline">{{ _gettext('Delete?') }}</label>
@@ -30,6 +31,7 @@
         {% filter forceescape %}
         <div class="inline-field well well-sm">
             <legend>
+                {# inline model 标题 #}
                 <small>{{ _gettext('New') }} {{ field.label.text }}</small>
                 <div class="pull-right">
                     <a href="javascript:void(0)" value="{{ _gettext('Are you sure you want to delete this record?') }}" class="inline-remove-field"><span class="fa fa-times glyphicon glyphicon-remove"></span></a>
@@ -40,6 +42,7 @@
         </div>
         {% endfilter %}
     </div>
+    {# create inline model #}
     <a id="{{ field.id }}-button" href="javascript:void(0)" class="btn btn-default" onclick="faForm.addInlineField(this, '{{ field.id }}');">{{ _gettext('Add') }} {{ field.label.text }}</a>
 </div>
 {% endmacro %}
