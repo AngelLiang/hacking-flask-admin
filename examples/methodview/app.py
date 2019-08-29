@@ -36,11 +36,16 @@ def index():
     return redirect('/admin')
 
 
+admin = admin.Admin(name="Example: MethodView")
+admin.add_view(ViewWithMethodViews())
+admin.init_app(app)
+
+
 if __name__ == '__main__':
     # Create admin interface
-    admin = admin.Admin(name="Example: MethodView")
-    admin.add_view(ViewWithMethodViews())
-    admin.init_app(app)
+    # admin = admin.Admin(name="Example: MethodView")
+    # admin.add_view(ViewWithMethodViews())
+    # admin.init_app(app)
 
     # Start app
     app.run(debug=True)
