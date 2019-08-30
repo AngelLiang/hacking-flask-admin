@@ -405,6 +405,8 @@ def get_form(model, converter,
             Generate hidden field with model primary key or not
         :param ignore_hidden:
             If set to True (default), will ignore properties that start with underscore
+
+        :param extra_fields: 额外的字段
     """
 
     # TODO: Support new 0.8 API
@@ -458,6 +460,7 @@ def get_form(model, converter,
     # Contribute extra fields
     if not only and extra_fields:
         for name, field in iteritems(extra_fields):
+            # 额外的字段覆盖原来的字段
             field_dict[name] = form.recreate_field(field)
 
     return type(model.__name__ + 'Form', (base_class, ), field_dict)

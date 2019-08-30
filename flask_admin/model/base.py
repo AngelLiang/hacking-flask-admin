@@ -1020,6 +1020,7 @@ class BaseModelView(BaseView, ActionsMixin):
                 is not set.
         """
         if excluded_columns:
+            # 排除的字段
             only_columns = [c for c in only_columns if c not in excluded_columns]
 
         return [(c, self.get_column_name(c)) for c in only_columns]

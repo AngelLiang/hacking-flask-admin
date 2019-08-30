@@ -201,9 +201,11 @@ class FileUploadField(fields.StringField):
                 map(lambda x: x.lower(), self.allowed_extensions))
 
     def _is_uploaded_file(self, data):
+        """是否是上传的文件"""
         return (data and isinstance(data, FileStorage) and data.filename)
 
     def pre_validate(self, form):
+        """预验证"""
         if self._is_uploaded_file(self.data) and not self.is_file_allowed(self.data.filename):
             raise ValidationError(gettext('Invalid file extension'))
 
@@ -252,6 +254,7 @@ class FileUploadField(fields.StringField):
             setattr(obj, name, filename)
 
     def generate_name(self, obj, file_data):
+        """生成名字"""
         filename = self.namegen(obj, file_data)
 
         if not self.relative_path:
@@ -381,7 +384,7 @@ class ImageUploadField(FileUploadField):
 
         self.max_size = max_size
         self.thumbnail_fn = thumbgen or thumbgen_filename
-        self.thumbnail_size = thumbnail_size
+        self.thumbnail_size = thumbnail_size  # 缩略图大小
         self.endpoint = endpoint
         self.image = None
         self.url_relative_path = url_relative_path
@@ -420,14 +423,17 @@ class ImageUploadField(FileUploadField):
 
     # Saving
     def _save_file(self, data, filename):
+        """保存文件"""
         path = self._get_path(filename)
 
+        # 检查路径
         if not op.exists(op.dirname(path)):
             os.makedirs(os.path.dirname(path), self.permission | 0o111)
 
         # Figure out format
         filename, format = self._get_save_format(filename, self.image)
 
+        # 检查格式
         if self.image and (self.image.format != format or self.max_size):
             if self.max_size:
                 image = self._resize(self.image, self.max_size)
@@ -439,11 +445,13 @@ class ImageUploadField(FileUploadField):
             data.seek(0)
             data.save(self._get_path(filename))
 
+        # 保存缩略图
         self._save_thumbnail(data, filename, format)
 
         return filename
 
     def _save_thumbnail(self, data, filename, format):
+        """保存缩略图"""
         if self.image and self.thumbnail_size:
             path = self._get_path(self.thumbnail_fn(filename))
 
@@ -465,6 +473,7 @@ class ImageUploadField(FileUploadField):
         return image
 
     def _save_image(self, image, path, format='JPEG'):
+        """保存图片"""
         if image.mode not in ('RGB', 'RGBA'):
             image = image.convert('RGBA')
 
