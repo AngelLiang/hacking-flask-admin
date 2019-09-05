@@ -70,10 +70,12 @@ class InlineBaseFormAdmin(object):
             :param kwargs:
                 Additional options
         """
+        # 配置类的默认值属性
         for k in self._defaults:
             if not hasattr(self, k):
                 setattr(self, k, None)
 
+        # 从参数获取变量值赋给属性
         for k, v in iteritems(kwargs):
             setattr(self, k, v)
 

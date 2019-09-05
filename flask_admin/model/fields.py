@@ -14,7 +14,7 @@ from .widgets import (InlineFieldListWidget, InlineFormWidget,
 
 
 class InlineFieldList(FieldList):
-    widget = InlineFieldListWidget()
+    widget = InlineFieldListWidget()  # 前端组件
 
     def __init__(self, *args, **kwargs):
         super(InlineFieldList, self).__init__(*args, **kwargs)
@@ -76,15 +76,20 @@ class InlineFieldList(FieldList):
 
     def populate_obj(self, obj, name):
         values = getattr(obj, name, None)
+        # 验证是否可迭代
         try:
             ivalues = iter(values)
         except TypeError:
             ivalues = iter([])
 
-        candidates = itertools.chain(ivalues, itertools.repeat(None))
+        # itertools.repeat() 负责把一个元素无限重复下去
+        # itertools.chain() 可以把一组迭代对象串联起来，形成一个更大的迭代器
+        # candidates=[None, None, ...]
+        candidates = itertools.chain(ivalues, itertools.repeat(None))  # 候选？
         _fake = type(str('_fake'), (object, ), {})
 
         output = []
+        # zip() 将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
         for field, data in zip(self.entries, candidates):
             if not self.should_delete(field):
                 fake_obj = _fake()
