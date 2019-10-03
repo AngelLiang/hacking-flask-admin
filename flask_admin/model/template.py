@@ -25,6 +25,7 @@ class BaseListRowAction(object):
 
 
 class LinkRowAction(BaseListRowAction):
+    """链接行操作"""
     def __init__(self, icon_class, url, title=None):
         super(LinkRowAction, self).__init__(title=title)
 
@@ -89,6 +90,7 @@ class ViewPopupRowAction(TemplateLinkRowAction):
 
 
 class EditRowAction(TemplateLinkRowAction):
+    """编辑行操作"""
     def __init__(self):
         super(EditRowAction, self).__init__(
             'row_actions.edit_row',
@@ -103,6 +105,7 @@ class EditPopupRowAction(TemplateLinkRowAction):
 
 
 class DeleteRowAction(TemplateLinkRowAction):
+    """删除行操作"""
     def __init__(self):
         super(DeleteRowAction, self).__init__(
             'row_actions.delete_row',

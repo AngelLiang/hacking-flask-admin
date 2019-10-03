@@ -890,6 +890,21 @@ class BaseModelView(BaseView, ActionsMixin):
     def _refresh_cache(self):
         """
             Refresh various cached variables.
+
+        以下字段会进行缓存：
+
+        _list_columns
+        _sortable_columns
+        can_view_details
+        _export_columns
+        column_choices
+        column_formatters_export
+        column_formatters_detail
+        column_type_formatters
+        column_type_formatters_export
+        column_type_formatters_detail
+        column_descriptions
+
         """
         # List view
         self._list_columns = self.get_list_columns()
@@ -991,18 +1006,22 @@ class BaseModelView(BaseView, ActionsMixin):
         actions = []
 
         if self.can_view_details:
+            # 可以查看详情
             if self.details_modal:
+                # 模态
                 actions.append(template.ViewPopupRowAction())
             else:
                 actions.append(template.ViewRowAction())
 
         if self.can_edit:
+            # 可以编辑
             if self.edit_modal:
                 actions.append(template.EditPopupRowAction())
             else:
                 actions.append(template.EditRowAction())
 
         if self.can_delete:
+            # 可以删除
             actions.append(template.DeleteRowAction())
 
         return actions + (self.column_extra_row_actions or [])

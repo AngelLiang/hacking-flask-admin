@@ -162,13 +162,13 @@
         {% endfor %}
     {% endif %}
 
-    {# 只渲染 form_rules 的子弹 #}
+    {# 只渲染 form_rules 的字段 #}
     {% if form_opts and form_opts.form_rules %}
         {% for r in form_opts.form_rules %}
             {{ r(form, form_opts=form_opts) }}
         {% endfor %}
     {% else %}
-        {# 渲染所有非hidden的字段 #}
+        {# 渲染所有非 hidden 的字段 #}
         {% for f in form if f.widget.input_type != 'hidden' %}
           {% if form_opts %}
             {% set kwargs = form_opts.widget_args.get(f.short_name, {}) %}
@@ -180,6 +180,7 @@
     {% endif %}
 {% endmacro %}
 
+{# 表单标签 #}
 {% macro form_tag(form=None, action=None) %}
     <form action="{{ action or '' }}" method="POST" role="form" class="admin-form form-horizontal" enctype="multipart/form-data">
       {{ caller() }}
@@ -208,7 +209,7 @@
 {# extra：额外字段 #}
 {# form_opts： #}
 {# action： #}
-{# is_modal：是否是modal #}
+{# is_modal：是否是模态 #}
 {% macro render_form(form, cancel_url, extra=None, form_opts=None, action=None, is_modal=False) -%}
     {% call form_tag(action=action) %}
         {{ render_form_fields(form, form_opts=form_opts) }}  {# 渲染字段 #}
@@ -216,6 +217,7 @@
     {% endcall %}
 {% endmacro %}
 
+{# 表单CSS #}
 {% macro form_css() %}
   <link href="{{ admin_static.url(filename='vendor/select2/select2.css', v='3.5.2') }}" rel="stylesheet">
   <link href="{{ admin_static.url(filename='vendor/select2/select2-bootstrap3.css', v='1.4.6') }}" rel="stylesheet">
@@ -229,6 +231,7 @@
   {% endif %}
 {% endmacro %}
 
+{# 表单JS #}
 {% macro form_js() %}
   {% if config.MAPBOX_MAP_ID %}
   <script>
@@ -257,8 +260,8 @@
   <script src="{{ admin_static.url(filename='admin/js/form.js', v='1.0.1') }}"></script>
 {% endmacro %}
 
+{# 生成按钮 #}
 {% macro extra() %}
-  {# 生成按钮 #}
   {% if admin_view.can_create %}
   {# 保存并新建另一个 #}
   <input name="_add_another" type="submit" class="btn btn-default" value="{{ _gettext('Save and Add Another') }}" />
