@@ -826,6 +826,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # Caching
     def _refresh_forms_cache(self):
+        """表单会进行缓存，所以覆写以下方法的时候会没有请求上下文"""
         # Forms
         self._form_ajax_refs = self._process_ajax_references()
 

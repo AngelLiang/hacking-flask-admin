@@ -55,6 +55,7 @@ class AdminModelConverter(ModelConverterBase):
         return prettify_name(name)
 
     def _get_description(self, name, field_args):
+        """获取描述说明"""
         if 'description' in field_args:
             return field_args['description']
 
@@ -64,6 +65,7 @@ class AdminModelConverter(ModelConverterBase):
             return column_descriptions.get(name)
 
     def _get_field_override(self, name):
+        """获取表单覆写"""
         form_overrides = getattr(self.view, 'form_overrides', None)
 
         if form_overrides:
@@ -170,10 +172,12 @@ class AdminModelConverter(ModelConverterBase):
             form_columns = getattr(self.view, 'form_columns', None) or ()
 
             # Do not display foreign keys - use relations, except when explicitly instructed
+            # 不显示外键 - 使用关系对象
             if column.foreign_keys and prop.key not in form_columns:
                 return None
 
             # Only display "real" columns
+            # 只显示 “真正的” columns
             if not isinstance(column, Column):
                 return None
 

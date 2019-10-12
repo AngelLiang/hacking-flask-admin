@@ -160,6 +160,8 @@
         {% endfor %}
     </table>
     </div>
+
+    {# 分页 #}
     {% block list_pager %}
     {% if num_pages is not none %}
     {{ lib.pager(page, num_pages, pager_url) }}

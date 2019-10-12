@@ -162,13 +162,13 @@
         {% endfor %}
     {% endif %}
 
-    {# 只渲染 form_rules 的子弹 #}
+    {# 只渲染 form_rules 的字段 #}
     {% if form_opts and form_opts.form_rules %}
         {% for r in form_opts.form_rules %}
             {{ r(form, form_opts=form_opts) }}
         {% endfor %}
     {% else %}
-        {# 渲染所有非hidden的字段 #}
+        {# 渲染所有非 hidden 的字段 #}
         {% for f in form if f.widget.input_type != 'hidden' %}
           {% if form_opts %}
             {% set kwargs = form_opts.widget_args.get(f.short_name, {}) %}
