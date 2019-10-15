@@ -83,6 +83,7 @@ class QuerySelectField(SelectFieldBase):
         self._object_list = None
 
     def _get_data(self):
+        """获取数据"""
         if self._formdata is not None:
             for pk, obj in self._get_object_list():
                 if pk == self._formdata:
@@ -91,6 +92,7 @@ class QuerySelectField(SelectFieldBase):
         return self._data
 
     def _set_data(self, data):
+        """设置数据"""
         self._data = data
         self._formdata = None
 
@@ -104,6 +106,7 @@ class QuerySelectField(SelectFieldBase):
         return self._object_list
 
     def iter_choices(self):
+        """选项迭代"""
         if self.allow_blank:
             yield (u'__None', self.blank_text, self.data is None)
 
@@ -111,6 +114,7 @@ class QuerySelectField(SelectFieldBase):
             yield (pk, self.get_label(obj), obj == self.data)
 
     def process_formdata(self, valuelist):
+        """表单处理"""
         if valuelist:
             if self.allow_blank and valuelist[0] == u'__None':
                 self.data = None
@@ -119,7 +123,7 @@ class QuerySelectField(SelectFieldBase):
                 self._formdata = valuelist[0]
 
     def pre_validate(self, form):
-        """预先验证"""
+        """预验证"""
         if not self.allow_blank or self.data is not None:
             for pk, obj in self._get_object_list():
                 if self.data == obj:

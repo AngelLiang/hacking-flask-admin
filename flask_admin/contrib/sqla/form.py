@@ -452,11 +452,14 @@ def get_form(model, converter,
     field_dict = {}
     for name, p in properties:
         # Ignore protected properties
+        # 忽略保护属性：ignore_hidden是全局控制变量
+        #              名字下划线开头的变量
         if ignore_hidden and name.startswith('_'):
             continue
 
         prop = _resolve_prop(p)
 
+        # 获取转换后的字段
         field = converter.convert(model, mapper, name, prop, field_args.get(name), hidden_pk)
         if field is not None:
             field_dict[name] = field
