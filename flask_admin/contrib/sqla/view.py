@@ -846,6 +846,8 @@ class ModelView(BaseModelView):
             subquery, so ``query(func.count('*'))`` should be used instead.
 
             See commit ``#45a2723`` for details.
+
+            使用 ``query(self.model).count()`` 会产生过多的子查询
         """
         return self.session.query(func.count('*')).select_from(self.model)
 

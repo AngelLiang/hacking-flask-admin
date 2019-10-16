@@ -1834,12 +1834,13 @@ class BaseModelView(BaseView, ActionsMixin):
         if column_fmt is not None:
             value = column_fmt(self, context, model, name)
         else:
-            value = self._get_field_value(model, name)
+            value = self._get_field_value(model, name)  # 默认方式
 
         choices_map = self._column_choices_map.get(name, {})
         if choices_map:
             return choices_map.get(value) or value
 
+        # 类型格式化
         type_fmt = None
         for typeobj, formatter in column_type_formatters.items():
             if isinstance(value, typeobj):
@@ -2061,7 +2062,7 @@ class BaseModelView(BaseView, ActionsMixin):
             # Misc
             enumerate=enumerate,
             get_pk_value=self.get_pk_value,
-            get_value=self.get_list_value,
+            get_value=self.get_list_value,  # 获取list vaue， formatter
             return_url=self._get_list_url(view_args),
         )
 
