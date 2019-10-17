@@ -756,12 +756,14 @@ class ModelView(BaseModelView):
             :param validators:
                 `form_args` dict with only validators
                 {'name': {'validators': [required()]}}
+
+            行内可编辑表单
         """
         converter = self.model_form_converter(self.session, self)
         form_class = form.get_form(self.model, converter,
                                    base_class=self.form_base_class,
-                                   only=self.column_editable_list,
-                                   field_args=validators)
+                                   only=self.column_editable_list,  # 设置可允许编辑的字段
+                                   field_args=validators)  # 验证器
 
         return create_editable_list_form(self.form_base_class, form_class,
                                          widget)
