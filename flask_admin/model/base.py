@@ -839,7 +839,7 @@ class BaseModelView(BaseView, ActionsMixin):
         self._action_form_class = self.get_action_form()
 
         # List View In-Line Editing
-        if self.column_editable_list:
+        if self.column_editable_list:  # 该字段无法放入请求上下文
             self._list_form_class = self.get_list_form()
         else:
             self.column_editable_list = {}
@@ -2280,6 +2280,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     @expose('/export/<export_type>/')
     def export(self, export_type):
+        """导出"""
         return_url = get_redirect_target() or self.get_url('.index_view')
 
         if not self.can_export or (export_type not in self.export_types):

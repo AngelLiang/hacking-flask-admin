@@ -79,6 +79,7 @@
                     </a>
                   {%- endif -%}
                 {% endif %}
+                {# 可以删除 #}
                 {%- if admin_view.can_delete and path -%}
                     {% if is_dir %}
                         {% if name != '..' and admin_view.can_delete_dirs %}
@@ -102,6 +103,7 @@
                 {%- endif -%}
                 {% endblock %}
             </td>
+            {# 是文件夹 #}
             {% if is_dir %}
             <td colspan="2">
                 <a href="{{ get_dir_url('.index_view', path)|safe }}">
@@ -109,7 +111,9 @@
                 </a>
             </td>
             {% else %}
+            {# 不是文件夹 #}
             <td>
+                {# 可以下载 #}
                 {% if admin_view.can_download %}
                   {%- if admin_view.edit_modal and admin_view.is_file_editable(path) -%}
                     {{ lib.add_modal_button(url=get_file_url(path, modal=True)|safe,
@@ -118,16 +122,19 @@
                     <a href="{{ get_file_url(path)|safe }}">{{ name }}</a>
                   {%- endif -%}
                 {% else %}
+                {# 不可下载 #}
                   {{ name }}
                 {% endif %}
             </td>
             {% if admin_view.is_column_visible('size') %}
+            {# size 字段可见 #}
             <td>
                 {{ size|filesizeformat }}
             </td>
             {% endif %}
             {% endif %}
             {% if admin_view.is_column_visible('date') %}
+            {# date 字段可见 #}
             <td>
                 {{ timestamp_format(date) }}
             </td>
@@ -140,8 +147,10 @@
     {% endblock %}
     {% block toolbar %}
     <div class="btn-toolbar">
+        {# 可以上传 #}
         {% if admin_view.can_upload %}
         <div class="btn-group">
+            {# 上传模态框 #}
             {%- if admin_view.upload_modal -%}
               {{ lib.add_modal_button(url=get_dir_url('.upload', path=dir_path, modal=True),
                                       btn_class="btn btn-default btn-large",
@@ -151,6 +160,7 @@
             {%- endif -%}
         </div>
         {% endif %}
+        {# 可以创建文件夹 #}
         {% if admin_view.can_mkdir %}
         <div class="btn-group">
             {%- if admin_view.mkdir_modal -%}
