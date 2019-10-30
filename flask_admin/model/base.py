@@ -1533,7 +1533,9 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # Exception handler
     def handle_view_exception(self, exc):
+        """处理视图异常"""
         if isinstance(exc, ValidationError):
+            # exc 是 表单验证异常对象
             flash(as_unicode(exc), 'error')
             return True
 
@@ -2248,6 +2250,7 @@ class BaseModelView(BaseView, ActionsMixin):
         return self.handle_action()
 
     def _export_data(self):
+        """导出数据"""
         # Macros in column_formatters are not supported.
         # Macros will have a function name 'inner'
         # This causes non-macro functions named 'inner' not work.

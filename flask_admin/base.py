@@ -597,6 +597,7 @@ class Admin(object):
         parent_name_text = as_unicode(parent_name)
         category = self.get_category_menu_item(name_text)
         parent = self.get_category_menu_item(parent_name_text)
+        # category 为空并且 parent 非空，才会添加 sub_category
         if category is None and parent is not None:
             category = SubMenuCategory(name)
             self._menu_categories[name_text] = category

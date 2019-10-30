@@ -19,6 +19,8 @@ from flask_admin.babel import gettext, lazy_gettext
 
 
 class LocalFileStorage(object):
+    """本地文件存储器"""
+
     def __init__(self, base_path):
         """
             Constructor.
@@ -306,7 +308,7 @@ class BaseFileAdmin(BaseView, ActionsMixin):
                 The storage backend that the `BaseFileAdmin` will use to operate on the files.
         """
         self.base_url = base_url
-        self.storage = storage
+        self.storage = storage  # 组合方式
 
         self.init_actions()
 
@@ -767,6 +769,7 @@ class BaseFileAdmin(BaseView, ActionsMixin):
         return datetime.fromtimestamp(timestamp).strftime(self.date_format)
 
     def _save_form_files(self, directory, path, form):
+        """保存表单的文件"""
         filename = self._separator.join([directory, secure_filename(form.upload.data.filename)])
 
         if self.storage.path_exists(filename):
