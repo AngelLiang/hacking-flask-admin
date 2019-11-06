@@ -15,7 +15,7 @@
 {% endif %}
 {%- endmacro %}
 
-{# 菜单布局 #}
+{# 左对齐的menu布局 #}
 {% macro menu(menu_root=None) %}
   {% if menu_root is none %}{% set menu_root = admin_view.admin.menu() %}{% endif %}
   {%- for item in menu_root %}
@@ -75,7 +75,7 @@
   {% endfor %}
 {% endmacro %}
 
-{# 菜单链接 #}
+{# 右对齐的links布局 #}
 {% macro menu_links(links=None) %}
   {% if links is none %}{% set links = admin_view.admin.menu_links() %}{% endif %}
   {% for item in links %}
@@ -88,6 +88,7 @@
   {% endfor %}
 {% endmacro %}
 
+{# flash消息 #}
 {% macro messages() %}
   {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}

@@ -6,6 +6,7 @@
 </a>
 {% endmacro %}
 
+{# 查看行数据 #}
 {% macro view_row(action, row_id, row) %}
   {{ link(action, get_url('.details_view', id=row_id, url=return_url), 'fa fa-eye glyphicon glyphicon-eye-open') }}
 {% endmacro %}
@@ -14,6 +15,7 @@
   {{ lib.add_modal_button(url=get_url('.details_view', id=row_id, url=return_url, modal=True), title=action.title, content='<span class="fa fa-eye glyphicon glyphicon-eye-open"></span>') }}
 {% endmacro %}
 
+{# 编辑行数据 #}
 {% macro edit_row(action, row_id, row) %}
   {{ link(action, get_url('.edit_view', id=row_id, url=return_url), 'fa fa-pencil glyphicon glyphicon-pencil') }}
 {% endmacro %}

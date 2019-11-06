@@ -44,6 +44,9 @@ class QuerySelectField(SelectFieldBase):
     `query_factory` callable passed to the field constructor will be called to
     obtain a query.
 
+    field 的`query`属性可以从 view 那边赋一个查询预实例。如果这个属性没有设置，则
+    传入field构造器的`query_factory` callable 将被调用给出查询。
+
     Specify `get_label` to customize the label associated with each option. If
     a string, this is the name of an attribute on the model object to use as
     the label text. If a one-argument callable, this callable will be passed

@@ -54,19 +54,20 @@
         <!-- navbar content -->
         <div class="collapse navbar-collapse" id="admin-navbar-collapse">
           
-          {# main_menu #}
+          {# main_menu: 默认左对齐 #}
           {% block main_menu %}
           <ul class="nav navbar-nav">
             {{ layout.menu() }}
           </ul>
           {% endblock %}
 
-          {# menu_links #}
+          {# menu_links: 右对齐 #}
           {% block menu_links %}
           <ul class="nav navbar-nav navbar-right">
             {{ layout.menu_links() }}
           </ul>
           {% endblock %}
+
           {# access_control #}
           {% block access_control %}
           {% endblock %}

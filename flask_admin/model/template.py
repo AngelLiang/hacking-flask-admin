@@ -16,6 +16,7 @@ class BaseListRowAction(object):
         return self.render(context, row_id, row)
 
     def _resolve_symbol(self, context, symbol):
+        """解析符号"""
         if '.' in symbol:
             parts = symbol.split('.')
             m = context.resolve(parts[0])
