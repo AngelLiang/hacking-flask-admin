@@ -837,6 +837,9 @@ class ModelView(BaseModelView):
 
             If you override this method, don't forget to also override `get_count_query`, for displaying the correct
             item count in the list view, and `get_one`, which is used when retrieving records for the edit view.
+
+            如果你覆写了这个方法，不要忘记也覆写 `get_count_query`，这样才能在list view显示正确的item计数和 `get_one`
+
         """
         return self.session.query(self.model)
 
