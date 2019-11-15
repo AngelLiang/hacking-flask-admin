@@ -67,9 +67,9 @@ class LocalFileStorage(object):
         for f in os.listdir(directory):
             fp = op.join(directory, f)
             rel_path = op.join(path, f)
-            is_dir = self.is_dir(fp)
-            size = op.getsize(fp)
-            last_modified = op.getmtime(fp)
+            is_dir = self.is_dir(fp)  # 是否是文件夹
+            size = op.getsize(fp)  # 获取文件的大小
+            last_modified = op.getmtime(fp)  # 最后修改时间
             items.append((f, rel_path, is_dir, size, last_modified))
         return items
 

@@ -774,6 +774,8 @@ class ModelView(BaseModelView):
 
             :param form_class:
                 Form class
+
+            内表单模型脚手架
         """
         inline_converter = self.inline_model_form_converter(self.session,
                                                             self,
