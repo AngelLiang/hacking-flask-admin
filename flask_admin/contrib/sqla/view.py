@@ -937,7 +937,7 @@ class ModelView(BaseModelView):
                                                                                    inner_join=False)
 
                 column = field if alias is None else getattr(alias, field.key)
-                filter_stmt.append(cast(column, Unicode).ilike(stmt))
+                filter_stmt.append(cast(column, Unicode).ilike(stmt))  # 使用ilike进行检索
 
                 if count_filter_stmt is not None:
                     column = field if count_alias is None else getattr(count_alias, field.key)
