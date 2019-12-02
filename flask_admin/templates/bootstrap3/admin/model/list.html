@@ -187,7 +187,7 @@
     {{ lib.simple_pager(page, data|length == page_size, pager_url) }}
     {% endif %}
     {% endblock %}
-    {% endblock %}
+    {% endblock %} {# model_list_table #}
 
     {% block actions %}
     {{ actionlib.form(actions, get_url('.action_view')) }}
@@ -196,7 +196,7 @@
     {%- if admin_view.edit_modal or admin_view.create_modal or admin_view.details_modal -%}
         {{ lib.add_modal_window() }}
     {%- endif -%}
-{% endblock %}
+{% endblock %}  {# body #}
 
 {% block tail %}
     {{ super() }}

@@ -1040,6 +1040,7 @@ class ModelView(BaseModelView):
 
         # Ignore eager-loaded relations (prevent unnecessary joins)
         # TODO: Separate join detection for query and count query?
+        # eager-loading: https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading
         if hasattr(query, '_join_entities'):
             for entity in query._join_entities:
                 for table in entity.tables:
@@ -1173,7 +1174,7 @@ class ModelView(BaseModelView):
                 Model to delete
         """
         try:
-            self.on_model_delete(model)
+            self.on_model_delete(model)  # 删除前事件
             self.session.flush()
             self.session.delete(model)
             self.session.commit()
@@ -1186,7 +1187,7 @@ class ModelView(BaseModelView):
 
             return False
         else:
-            self.after_model_delete(model)
+            self.after_model_delete(model)  # 删除后事件
 
         return True
 
