@@ -89,7 +89,7 @@
 </form>
 {% endmacro %}
 
-{# 页面大小表单 #}
+{# 每页显示item数量表单 #}
 {% macro page_size_form(generator, btn_class='dropdown-toggle') %}
     <a class="{{ btn_class }}" data-toggle="dropdown" href="javascript:void(0)">
         {{ page_size }} {{ _gettext('items') }}<b class="caret"></b>

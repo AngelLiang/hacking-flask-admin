@@ -5,26 +5,31 @@
     <ul class="dropdown-menu">
         {% for p in actions %}
         <li>
+            {# modelActions 是 js 对象 #}
             <a href="javascript:void(0)" onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
         </li>
         {% endfor %}
     </ul>
 {% endmacro %}
 
+{# action_form #}
 {% macro form(actions, url) %}
     {% if actions %}
     <form id="action_form" action="{{ url }}" method="POST" style="display: none">
+        {# csrf_token #}
         {% if action_form.csrf_token %}
         {{ action_form.csrf_token }}
         {% elif csrf_token %}
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         {% endif %}
+
         {{ action_form.url(value=return_url) }}
         {{ action_form.action() }}
     </form>
     {% endif %}
 {% endmacro %}
 
+{# action_form script #}
 {% macro script(message, actions, actions_confirmation) %}
     {% if actions %}
         <div id="actions-confirmation-data" style="display:none;">{{ actions_confirmation|tojson|safe }}</div>

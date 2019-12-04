@@ -45,7 +45,7 @@
         </li>
         {% endif %}
 
-        {# 可设置页面大小 #}
+        {# 可设置页面item大小 #}
         {% if can_set_page_size %}
         <li class="dropdown">
             {{ model_layout.page_size_form(page_size_url) }}
@@ -83,6 +83,7 @@
         <thead>
             <tr>
                 {% block list_header scoped %}
+                    {# 是否可全选 #}
                     {% if actions %}
                     <th class="list-checkbox-column">
                         <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="{{ _gettext('Select all records') }}" />
@@ -129,7 +130,7 @@
         {% for row in data %}
         <tr>
             {% block list_row scoped %}
-                {# 是否可多选 #}
+                {# 每行是否可选 #}
                 {% if actions %}
                 <td>
                     <input type="checkbox" name="rowid" class="action-checkbox" value="{{ get_pk_value(row) }}" title="{{ _gettext('Select record') }}" />
@@ -189,10 +190,12 @@
     {% endblock %}
     {% endblock %} {# model_list_table #}
 
+    {# action form #}
     {% block actions %}
     {{ actionlib.form(actions, get_url('.action_view')) }}
     {% endblock %}
 
+    {# modal #}
     {%- if admin_view.edit_modal or admin_view.create_modal or admin_view.details_modal -%}
         {{ lib.add_modal_window() }}
     {%- endif -%}
@@ -209,6 +212,7 @@
     <script src="{{ admin_static.url(filename='admin/js/filters.js', v='1.0.0') }}"></script>
     {{ lib.form_js() }}
 
+    {# action form script #}
     {{ actionlib.script(_gettext('Please select at least one record.'),
                         actions,
                         actions_confirmation) }}
