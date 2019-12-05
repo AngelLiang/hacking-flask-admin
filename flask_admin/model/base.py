@@ -1322,6 +1322,7 @@ class BaseModelView(BaseView, ActionsMixin):
             action = HiddenField()
             url = HiddenField()
             # rowid is retrieved using getlist, for backward compatibility
+            # 为了向后兼容，使用 getlist 检索 rowid
 
         return ActionForm
 
