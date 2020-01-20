@@ -13,13 +13,16 @@
 {% block body %}
     {% block model_menu_bar %}
     <ul class="nav nav-tabs actions-nav">
+        {# List #}
         <li class="active">
             <a href="javascript:void(0)">{{ _gettext('List') }}{% if count %} ({{ count }}){% endif %}</a>
         </li>
 
+        {# 可创建 #}
         {% if admin_view.can_create %}
         <li>
           {%- if admin_view.create_modal -%}
+            {# 模态框 #}
             {{ lib.add_modal_button(url=get_url('.create_view', url=return_url, modal=True), title=_gettext('Create New Record'), content=_gettext('Create')) }}
           {% else %}
             <a href="{{ get_url('.create_view', url=return_url) }}" title="{{ _gettext('Create New Record') }}">{{ _gettext('Create') }}</a>
@@ -27,50 +30,60 @@
         </li>
         {% endif %}
 
+        {# 可导出 #}
         {% if admin_view.can_export %}
             {{ model_layout.export_options() }}
         {% endif %}
 
+        {# 在 filter 前添加 menu bar #}
         {% block model_menu_bar_before_filters %}{% endblock %}
 
+        {# 可过滤 #}
         {% if filters %}
         <li class="dropdown">
             {{ model_layout.filter_options() }}
         </li>
         {% endif %}
 
+        {# 可设置页面item大小 #}
         {% if can_set_page_size %}
         <li class="dropdown">
             {{ model_layout.page_size_form(page_size_url) }}
         </li>
         {% endif %}
 
+        {# 下弹窗，默认有批量删除选项 #}
         {% if actions %}
         <li class="dropdown">
             {{ actionlib.dropdown(actions) }}
         </li>
         {% endif %}
 
+        {# 搜索表单 #}
         {% if search_supported %}
         <li>
             {{ model_layout.search_form() }}
         </li>
         {% endif %}
+        {# 在 filter 后添加 menu bar #}
         {% block model_menu_bar_after_filters %}{% endblock %}
     </ul>
     {% endblock %}
 
+    {# 过滤表单 #}
     {% if filters %}
         {{ model_layout.filter_form() }}
         <div class="clearfix"></div>
     {% endif %}
 
+    {# 模型列表表格 #}
     {% block model_list_table %}
     <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover model-list">
         <thead>
             <tr>
                 {% block list_header scoped %}
+                    {# 是否可全选 #}
                     {% if actions %}
                     <th class="list-checkbox-column">
                         <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="{{ _gettext('Select all records') }}" />
@@ -84,6 +97,7 @@
                     {% for c, name in list_columns %}
                     {% set column = loop.index0 %}
                     <th class="column-header col-{{c}}">
+                        {# 可排序 #}
                         {% if admin_view.is_sortable(c) %}
                             {% if sort_column == column %}
                                 <a href="{{ sort_url(column, True) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">
@@ -100,6 +114,7 @@
                         {% else %}
                             {{ name }}
                         {% endif %}
+                        {# 行描述 #}
                         {% if admin_view.column_descriptions.get(c) %}
                             <a class="fa fa-question-circle glyphicon glyphicon-question-sign"
                                title="{{ admin_view.column_descriptions[c] }}"
@@ -111,14 +126,17 @@
                 {% endblock %}
             </tr>
         </thead>
+        {# 数据 #}
         {% for row in data %}
         <tr>
             {% block list_row scoped %}
+                {# 每行是否可选 #}
                 {% if actions %}
                 <td>
                     <input type="checkbox" name="rowid" class="action-checkbox" value="{{ get_pk_value(row) }}" title="{{ _gettext('Select record') }}" />
                 </td>
                 {% endif %}
+                {# 渲染行控制按钮 #}
                 {% block list_row_actions_column scoped %}
                     {% if admin_view.column_display_actions %}
                     <td class="list-buttons-column">
@@ -133,6 +151,7 @@
 
                 {% for c, name in list_columns %}
                     <td class="col-{{c}}">
+                    {# 行内可编辑 #}
                     {% if admin_view.is_editable(c) %}
                         {% set form = list_forms[get_pk_value(row)] %}
                         {% if form.csrf_token %}
@@ -160,6 +179,8 @@
         {% endfor %}
     </table>
     </div>
+
+    {# 分页 #}
     {% block list_pager %}
     {% if num_pages is not none %}
     {{ lib.pager(page, num_pages, pager_url) }}
@@ -167,16 +188,18 @@
     {{ lib.simple_pager(page, data|length == page_size, pager_url) }}
     {% endif %}
     {% endblock %}
-    {% endblock %}
+    {% endblock %} {# model_list_table #}
 
+    {# action form #}
     {% block actions %}
     {{ actionlib.form(actions, get_url('.action_view')) }}
     {% endblock %}
 
+    {# modal #}
     {%- if admin_view.edit_modal or admin_view.create_modal or admin_view.details_modal -%}
         {{ lib.add_modal_window() }}
     {%- endif -%}
-{% endblock %}
+{% endblock %}  {# body #}
 
 {% block tail %}
     {{ super() }}
@@ -189,6 +212,7 @@
     <script src="{{ admin_static.url(filename='admin/js/filters.js', v='1.0.0') }}"></script>
     {{ lib.form_js() }}
 
+    {# action form script #}
     {{ actionlib.script(_gettext('Please select at least one record.'),
                         actions,
                         actions_confirmation) }}

@@ -756,12 +756,14 @@ class ModelView(BaseModelView):
             :param validators:
                 `form_args` dict with only validators
                 {'name': {'validators': [required()]}}
+
+            行内可编辑表单
         """
         converter = self.model_form_converter(self.session, self)
         form_class = form.get_form(self.model, converter,
                                    base_class=self.form_base_class,
-                                   only=self.column_editable_list,
-                                   field_args=validators)
+                                   only=self.column_editable_list,  # 设置可允许编辑的字段
+                                   field_args=validators)  # 验证器
 
         return create_editable_list_form(self.form_base_class, form_class,
                                          widget)
@@ -772,6 +774,8 @@ class ModelView(BaseModelView):
 
             :param form_class:
                 Form class
+
+            内表单模型脚手架
         """
         inline_converter = self.inline_model_form_converter(self.session,
                                                             self,
@@ -835,6 +839,9 @@ class ModelView(BaseModelView):
 
             If you override this method, don't forget to also override `get_count_query`, for displaying the correct
             item count in the list view, and `get_one`, which is used when retrieving records for the edit view.
+
+            如果你覆写了这个方法，不要忘记也覆写 `get_count_query`，这样才能在list view显示正确的item计数和 `get_one`
+
         """
         return self.session.query(self.model)
 
@@ -846,6 +853,8 @@ class ModelView(BaseModelView):
             subquery, so ``query(func.count('*'))`` should be used instead.
 
             See commit ``#45a2723`` for details.
+
+            使用 ``query(self.model).count()`` 会产生过多的子查询
         """
         return self.session.query(func.count('*')).select_from(self.model)
 
@@ -928,7 +937,7 @@ class ModelView(BaseModelView):
                                                                                    inner_join=False)
 
                 column = field if alias is None else getattr(alias, field.key)
-                filter_stmt.append(cast(column, Unicode).ilike(stmt))
+                filter_stmt.append(cast(column, Unicode).ilike(stmt))  # 使用ilike进行检索
 
                 if count_filter_stmt is not None:
                     column = field if count_alias is None else getattr(count_alias, field.key)
@@ -1031,6 +1040,7 @@ class ModelView(BaseModelView):
 
         # Ignore eager-loaded relations (prevent unnecessary joins)
         # TODO: Separate join detection for query and count query?
+        # eager-loading: https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading
         if hasattr(query, '_join_entities'):
             for entity in query._join_entities:
                 for table in entity.tables:
@@ -1164,7 +1174,7 @@ class ModelView(BaseModelView):
                 Model to delete
         """
         try:
-            self.on_model_delete(model)
+            self.on_model_delete(model)  # 删除前事件
             self.session.flush()
             self.session.delete(model)
             self.session.commit()
@@ -1177,7 +1187,7 @@ class ModelView(BaseModelView):
 
             return False
         else:
-            self.after_model_delete(model)
+            self.after_model_delete(model)  # 删除后事件
 
         return True
 

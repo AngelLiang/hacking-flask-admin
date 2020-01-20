@@ -8,6 +8,7 @@ from .tools import get_primary_key, has_multiple_pks, is_relationship, is_associ
 
 
 class QueryAjaxModelLoader(AjaxModelLoader):
+    """查询Ajax模型加载器"""
     def __init__(self, name, session, model, **options):
         """
             Constructor.

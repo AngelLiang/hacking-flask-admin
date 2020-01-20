@@ -1,3 +1,4 @@
+{# 过滤选项 #}
 {% macro filter_options(btn_class='dropdown-toggle') %}
     <a class="{{ btn_class }}" data-toggle="dropdown" href="javascript:void(0)">
         {{ _gettext('Add Filter') }}<b class="caret"></b>
@@ -11,6 +12,7 @@
     </ul>
 {% endmacro %}
 
+{# 导出选项 #}
 {% macro export_options(btn_class='dropdown-toggle') %}
     {% if admin_view.export_types|length > 1 %}
     <li class="dropdown">
@@ -32,6 +34,7 @@
     {% endif %}
 {% endmacro %}
 
+{# 过滤表单 #}
 {% macro filter_form() %}
     <form id="filter_form" method="GET" action="{{ return_url }}">
         {% if sort_column is not none %}
@@ -58,6 +61,7 @@
     <div class="clearfix"></div>
 {% endmacro %}
 
+{# 搜索表单 #}
 {% macro search_form(input_class="col-md-2") %}
 <form method="GET" action="{{ return_url }}" class="navbar-form navbar-left" role="search">
     {% for flt_name, flt_value in filter_args.items() %}
@@ -85,6 +89,7 @@
 </form>
 {% endmacro %}
 
+{# 每页显示item数量表单 #}
 {% macro page_size_form(generator, btn_class='dropdown-toggle') %}
     <a class="{{ btn_class }}" data-toggle="dropdown" href="javascript:void(0)">
         {{ page_size }} {{ _gettext('items') }}<b class="caret"></b>

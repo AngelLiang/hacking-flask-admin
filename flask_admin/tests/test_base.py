@@ -297,6 +297,7 @@ def get_visibility():
 
 
 def test_submenu():
+    """测试子菜单"""
     app = Flask(__name__)
     admin = base.Admin(app)
     admin.add_view(MockView(name='Test 1', category='Test', endpoint='test1'))
@@ -402,6 +403,7 @@ def test_root_mount():
 
 
 def test_menu_links():
+    """测试菜单链接"""
     app = Flask(__name__)
     admin = base.Admin(app)
     admin.add_link(base.MenuLink('TestMenuLink1', endpoint='.index'))
@@ -416,6 +418,7 @@ def test_menu_links():
 
 
 def test_add_links():
+    """测试添加链接"""
     app = Flask(__name__)
     admin = base.Admin(app)
     admin.add_links(base.MenuLink('TestMenuLink1', endpoint='.index'),

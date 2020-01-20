@@ -826,6 +826,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # Caching
     def _refresh_forms_cache(self):
+        """表单会进行缓存，所以覆写以下方法的时候会没有请求上下文"""
         # Forms
         self._form_ajax_refs = self._process_ajax_references()
 
@@ -838,7 +839,7 @@ class BaseModelView(BaseView, ActionsMixin):
         self._action_form_class = self.get_action_form()
 
         # List View In-Line Editing
-        if self.column_editable_list:
+        if self.column_editable_list:  # 该字段无法放入请求上下文
             self._list_form_class = self.get_list_form()
         else:
             self.column_editable_list = {}
@@ -1340,6 +1341,7 @@ class BaseModelView(BaseView, ActionsMixin):
             action = HiddenField()
             url = HiddenField()
             # rowid is retrieved using getlist, for backward compatibility
+            # 为了向后兼容，使用 getlist 检索 rowid
 
         return ActionForm
 
@@ -1551,7 +1553,9 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # Exception handler
     def handle_view_exception(self, exc):
+        """处理视图异常"""
         if isinstance(exc, ValidationError):
+            # exc 是 表单验证异常对象
             flash(as_unicode(exc), 'error')
             return True
 
@@ -1852,12 +1856,13 @@ class BaseModelView(BaseView, ActionsMixin):
         if column_fmt is not None:
             value = column_fmt(self, context, model, name)
         else:
-            value = self._get_field_value(model, name)
+            value = self._get_field_value(model, name)  # 默认方式
 
         choices_map = self._column_choices_map.get(name, {})
         if choices_map:
             return choices_map.get(value) or value
 
+        # 类型格式化
         type_fmt = None
         for typeobj, formatter in column_type_formatters.items():
             if isinstance(value, typeobj):
@@ -2079,7 +2084,7 @@ class BaseModelView(BaseView, ActionsMixin):
             # Misc
             enumerate=enumerate,
             get_pk_value=self.get_pk_value,
-            get_value=self.get_list_value,
+            get_value=self.get_list_value,  # 获取list vaue， formatter
             return_url=self._get_list_url(view_args),
         )
 
@@ -2265,6 +2270,7 @@ class BaseModelView(BaseView, ActionsMixin):
         return self.handle_action()
 
     def _export_data(self):
+        """导出数据"""
         # Macros in column_formatters are not supported.
         # Macros will have a function name 'inner'
         # This causes non-macro functions named 'inner' not work.
@@ -2297,6 +2303,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     @expose('/export/<export_type>/')
     def export(self, export_type):
+        """导出"""
         return_url = get_redirect_target() or self.get_url('.index_view')
 
         if not self.can_export or (export_type not in self.export_types):

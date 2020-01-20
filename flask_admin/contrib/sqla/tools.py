@@ -204,6 +204,10 @@ def get_field_with_path(model, name, return_remote_proxy_attr=True):
 
 # copied from sqlalchemy-utils
 def get_hybrid_properties(model):
+    """获取混合属性
+
+    :param model:
+    """
     return dict(
         (key, prop)
         for key, prop in inspect(model).all_orm_descriptors.items()
@@ -212,6 +216,11 @@ def get_hybrid_properties(model):
 
 
 def is_hybrid_property(model, attr_name):
+    """是否是混合属性
+
+    :param model:
+    :param attr_name:
+    """
     if isinstance(attr_name, string_types):
         names = attr_name.split('.')
         last_model = model
