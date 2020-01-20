@@ -2043,7 +2043,7 @@ class BaseModelView(BaseView, ActionsMixin):
             list_columns=self._list_columns,
             sortable_columns=self._sortable_columns,
             editable_columns=self.column_editable_list,
-            list_row_actions=self.get_list_row_actions(),
+            list_row_actions=self.get_list_row_actions(),  # 在这里调用 get_list_row_actions 传递给模板
 
             # Pagination
             count=count,
