@@ -2,7 +2,7 @@
 SECRET_KEY = '123456790'
 
 # database connection
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://flask_admin_geo:flask_admin_geo@localhost/flask_admin_geo'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:postgres@localhost/flask_admin_geo'
 SQLALCHEMY_ECHO = True
 
 # credentials for loading map tiles from mapbox
