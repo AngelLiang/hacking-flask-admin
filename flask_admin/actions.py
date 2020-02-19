@@ -103,6 +103,8 @@ class ActionsMixin(object):
                 Name of the view to return to after the request.
                 If not provided, will return user to the return url in the form
                 or the list view.
+
+        处理操作请求
         """
         form = self.action_form()
 

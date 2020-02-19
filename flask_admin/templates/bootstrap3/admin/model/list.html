@@ -52,7 +52,7 @@
         </li>
         {% endif %}
 
-        {# 下弹窗，默认有批量删除选项 #}
+        {# 批量操作下弹窗，默认有批量删除选项 #}
         {% if actions %}
         <li class="dropdown">
             {{ actionlib.dropdown(actions) }}
@@ -141,6 +141,7 @@
                     {% if admin_view.column_display_actions %}
                     <td class="list-buttons-column">
                         {% block list_row_actions scoped %}
+                          {# 遍历 list_row_actions 并渲染 #}
                           {% for action in list_row_actions %}
                           {{ action.render_ctx(get_pk_value(row), row) }}
                           {% endfor %}
@@ -190,8 +191,9 @@
     {% endblock %}
     {% endblock %} {# model_list_table #}
 
-    {# action form #}
+    {# 批量操作表单 #}
     {% block actions %}
+    {# 检查操作是否有权限 #}
     {{ actionlib.form(actions, get_url('.action_view')) }}
     {% endblock %}
 

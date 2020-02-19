@@ -1360,6 +1360,8 @@ class BaseModelView(BaseView, ActionsMixin):
             Instantiate model editing form and return it.
 
             Override to implement custom behavior.
+
+            此时的 model 是没有修改前的数据
         """
         return self._edit_form_class(get_form_data(), obj=obj)
 
@@ -1557,7 +1559,7 @@ class BaseModelView(BaseView, ActionsMixin):
     def handle_view_exception(self, exc):
         """处理视图异常"""
         if isinstance(exc, ValidationError):
-            # exc 是 表单验证异常对象
+            # 可以从视图中抛出 ValidationError 异常
             flash(as_unicode(exc), 'error')
             return True
 
@@ -1585,6 +1587,9 @@ class BaseModelView(BaseView, ActionsMixin):
                 Model that will be created/updated
             :param is_created:
                 Will be set to True if model was created and to False if edited
+
+
+            此时的 model 是已经被 form 修改后的数据
         """
         pass
 
@@ -2166,9 +2171,10 @@ class BaseModelView(BaseView, ActionsMixin):
         if not hasattr(form, '_validated_ruleset') or not form._validated_ruleset:
             self._validate_form_instance(ruleset=self._form_edit_rules, form=form)
 
+        # POST
         if self.validate_form(form):
             if self.update_model(form, model):
-                # 更新model成功
+                # 更新 model 成功
                 flash(gettext('Record was successfully saved.'), 'success')
                 if '_add_another' in request.form:
                     # 添加另一个，重定向到创建视图
@@ -2242,6 +2248,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
         form = self.delete_form()
 
+        # POST
         if self.validate_form(form):
             # id is InputRequired()
             id = form.id.data

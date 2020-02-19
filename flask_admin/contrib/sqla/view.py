@@ -733,6 +733,7 @@ class ModelView(BaseModelView):
             Create form from the model.
         """
         converter = self.model_form_converter(self.session, self)
+        # form工厂模式
         form_class = form.get_form(self.model, converter,
                                    base_class=self.form_base_class,
                                    only=self.form_columns,  # 只需要显示的字段
@@ -1104,7 +1105,9 @@ class ModelView(BaseModelView):
 
     # Error handler
     def handle_view_exception(self, exc):
+        """处理视图异常"""
         if isinstance(exc, IntegrityError):
+            # 数据库写入异常
             if current_app.config.get(
                 'ADMIN_RAISE_ON_INTEGRITY_ERROR',
                 current_app.config.get('ADMIN_RAISE_ON_VIEW_EXCEPTION')
@@ -1126,7 +1129,7 @@ class ModelView(BaseModelView):
         """
         try:
             model = self.model()
-            form.populate_obj(model)
+            form.populate_obj(model)  # 使用 form.populate_obj 方法对 model 赋值
             self.session.add(model)
             self._on_model_change(form, model, True)
             self.session.commit()
@@ -1153,7 +1156,8 @@ class ModelView(BaseModelView):
                 Model instance
         """
         try:
-            form.populate_obj(model)
+            form.populate_obj(model)  # 更新model
+            # 触发更新model事件
             self._on_model_change(form, model, False)
             self.session.commit()
         except Exception as ex:
@@ -1198,6 +1202,7 @@ class ModelView(BaseModelView):
     # Default model actions
     def is_action_allowed(self, name):
         # Check delete action permission
+        # 检查删除操作权限，同步到下面的批量操作
         if name == 'delete' and not self.can_delete:
             return False
 
