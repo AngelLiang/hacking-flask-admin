@@ -393,6 +393,8 @@ def get_form(model, converter,
     """
         Generate form from the model.
 
+        从模型生成表单
+
         :param model:
             Model to generate form from
         :param converter:
@@ -459,7 +461,7 @@ def get_form(model, converter,
 
         prop = _resolve_prop(p)
 
-        # 获取转换后的字段
+        # 获取转换后的表单字段
         field = converter.convert(model, mapper, name, prop, field_args.get(name), hidden_pk)
         if field is not None:
             field_dict[name] = field
@@ -469,7 +471,7 @@ def get_form(model, converter,
         for name, field in iteritems(extra_fields):
             # 额外的字段覆盖原来的字段
             field_dict[name] = form.recreate_field(field)
-
+    # 创建表单
     return type(model.__name__ + 'Form', (base_class, ), field_dict)
 
 

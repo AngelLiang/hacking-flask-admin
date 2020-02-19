@@ -826,7 +826,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     # Caching
     def _refresh_forms_cache(self):
-        """表单会进行缓存，所以覆写以下方法的时候会没有请求上下文"""
+        """表单会进行缓存，所以调用以下方法的时候会没有请求上下文"""
         # Forms
         self._form_ajax_refs = self._process_ajax_references()
 
@@ -1003,6 +1003,8 @@ class BaseModelView(BaseView, ActionsMixin):
         """
             Return list of row action objects, each is instance of
             :class:`~flask_admin.model.template.BaseListRowAction`
+
+            配置全局 row actions
         """
         actions = []
 
@@ -1591,6 +1593,7 @@ class BaseModelView(BaseView, ActionsMixin):
             Compatibility helper.
         """
         try:
+            # 触发model更新触发
             self.on_model_change(form, model, is_created)
         except TypeError as e:
             if re.match(r'on_model_change\(\) takes .* 3 .* arguments .* 4 .* given .*', str(e)):
@@ -2147,7 +2150,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
         id = get_mdict_item_or_list(request.args, 'id')
         if id is None:
-            # 没有id字段，跳转回主页
+            # 没获取到id，跳转回主页
             return redirect(return_url)
 
         # 获取model

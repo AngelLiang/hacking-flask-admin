@@ -1096,6 +1096,9 @@ class ModelView(BaseModelView):
 
             :param id:
                 Model id
+
+        可以考虑覆写该方法，检查用户是否有该数据的权限
+        这样就对 view_detail 、 edit 、 delete 等操作添加了权限
         """
         return self.session.query(self.model).get(tools.iterdecode(id))
 
@@ -1162,6 +1165,7 @@ class ModelView(BaseModelView):
 
             return False
         else:
+            # 更新model之后事件
             self.after_model_change(form, model, False)
 
         return True

@@ -13,10 +13,20 @@ class BaseListRowAction(object):
 
     @contextfunction
     def render_ctx(self, context, row_id, row):
+        """设置为 jinja2 上下文函数
+
+        :param context: jinja2 context
+        :param row_id:
+        :param row:
+        """
         return self.render(context, row_id, row)
 
     def _resolve_symbol(self, context, symbol):
-        """解析符号"""
+        """渲染特定的模板
+
+        :param context:
+        :param symbol:
+        """
         if '.' in symbol:
             parts = symbol.split('.')
             m = context.resolve(parts[0])
