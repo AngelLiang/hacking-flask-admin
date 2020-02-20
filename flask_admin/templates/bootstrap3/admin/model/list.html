@@ -45,7 +45,7 @@
         </li>
         {% endif %}
 
-        {# 可设置页面item大小 #}
+        {# 可设置每页可显示的数量 #}
         {% if can_set_page_size %}
         <li class="dropdown">
             {{ model_layout.page_size_form(page_size_url) }}
@@ -103,8 +103,10 @@
                                 <a href="{{ sort_url(column, True) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">
                                     {{ name }}
                                     {% if sort_desc %}
+                                        {# 升序 #}
                                         <span class="fa fa-chevron-up glyphicon glyphicon-chevron-up"></span>
                                     {% else %}
+                                        {# 降序 #}
                                         <span class="fa fa-chevron-down glyphicon glyphicon-chevron-down"></span>
                                     {% endif %}
                                 </a>
@@ -115,6 +117,7 @@
                             {{ name }}
                         {% endif %}
                         {# 行描述 #}
+                        {# 使用了 tooltip 控件 #}
                         {% if admin_view.column_descriptions.get(c) %}
                             <a class="fa fa-question-circle glyphicon glyphicon-question-sign"
                                title="{{ admin_view.column_descriptions[c] }}"
