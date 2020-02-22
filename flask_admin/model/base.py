@@ -2410,6 +2410,7 @@ class BaseModelView(BaseView, ActionsMixin):
 
     @expose('/ajax/lookup/')
     def ajax_lookup(self):
+        """异步查找"""
         name = request.args.get('name')
         query = request.args.get('query')
         offset = request.args.get('offset', type=int)
